@@ -16,7 +16,7 @@ module.exports = {
         app: './src/router.jsx',
         vendor: ["react", "react-dom", "react-bootstrap", "react-router", "react-intl", "react-router-bootstrap", "intl", "react-intl/locale-data/fr", "react-intl/locale-data/en", "jquery", "bootstrap-datepicker"]
     },
-    output: { path: __dirname + "/build", filename: 'bundle.js' },
+    output: { path: __dirname + "/docs", filename: 'bundle.js' },
     module: {
         loaders: [
             {
