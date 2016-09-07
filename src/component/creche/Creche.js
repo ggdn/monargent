@@ -74,12 +74,13 @@ export default class Creche extends Component {
       var nbsf = nbh - nbag - nbcs > valeur["sf"] ? valeur["sf"] : nbh - nbag - nbcs
       var nbpt = nbh - nbag - nbcs - nbsf
 
-      var tariffacture = nbcs * categorie["cs"] + nbsf * categorie["sf"] + nbpt * categorie["pt"]
+      var tariffacture = nbcs * this.getPrix(tarifh,categorie["cs"]) + nbsf * this.getPrix(tarifh,categorie["sf"]) + nbpt * this.getPrix(tarifh,categorie["pt"])
 
-      console.log("nbh:"+nbag+" "+nbcs+" "+nbsf+" "+nbpt)
-      this.setState({categorie:categorie,valeur:valeur,tariffacture:tariffacture}, () => {
-        console.log(this.state)
-      })
+      this.setState({categorie:categorie,valeur:valeur,tariffacture:tariffacture})
+    }
+
+    getPrix(prixhcreche, participationparental) {
+      return prixhcreche < participationparental ? prixhcreche : participationparental
     }
 
     getCategorie(structure, categoriesalaire, numeroenfant) {
