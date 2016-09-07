@@ -28,8 +28,8 @@ export default class App extends Component {
     constructor () {
         super()
         this.state = {
-            currentLocale: "en",
-            messages: messagesData["en"]
+            currentLocale: "fr",
+            messages: messagesData["fr"]
         }
     }
 
@@ -44,18 +44,15 @@ export default class App extends Component {
                     <Navbar inverse fixedTop={true} fluid={true}>
                             <Navbar.Header>
                                 <Navbar.Brand>
-                                    <a href="#"><FormattedMessage id="INLINE" /></a>
+                                    <a href="#"><FormattedMessage id="site.title" /></a>
                                 </Navbar.Brand>
                                 <Navbar.Toggle />
                             </Navbar.Header>
                             <Navbar.Collapse>
                                 <Nav>
                                     <IndexLinkContainer to="/">
-                                        <NavItem eventKey={1}>Home</NavItem>
+                                        <NavItem eventKey={1}>Simulation crèche</NavItem>
                                     </IndexLinkContainer>
-                                    <LinkContainer to="/annee">
-                                        <NavItem eventKey={2}>Annee</NavItem>
-                                    </LinkContainer>
                                 </Nav>
                                 <Nav pullRight>
                                     <NavItem eventKey={1} onClick={this.handleClick.bind(this,"fr")}>fr</NavItem>

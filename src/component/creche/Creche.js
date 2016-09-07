@@ -1,16 +1,25 @@
 import React, {Component, PropTypes} from 'react';
 import InputDate from '../../framework/components/form/InputDate.jsx'
 import InputText from '../../framework/components/form/InputText.jsx'
+import InputEuro from '../../framework/components/form/InputEuro'
+import InputNb from '../../framework/components/form/InputNb'
+import InputSelect from '../../framework/components/form/InputSelect'
 import {FormattedMessage} from 'react-intl';
+import valeurs from '../../baremes/valeur.json';
+import str2 from '../../baremes/structures-conventionnees-enfants-scolarises.json';
+import str1 from '../../baremes/structures-conventionnees-enfants-non-scolarises.json';
+import str4 from '../../baremes/structures-non-conventionnees-enfants-scolarises.json';
+import str3 from '../../baremes/structures-non-conventionnees-enfants-non-scolarises.json';
 
 const SSM = 1922.96
 
 export default class Creche extends Component {
 
     state = {
-      salairereference:0,
-      categoriesalaire:0,
-      values : {}
+      tariffacture:0,
+      categorie:{},
+      valeur:{},
+      values :{}
     }
 
     handleFieldChange(fieldId, value) {
@@ -50,50 +59,103 @@ export default class Creche extends Component {
         categoriesalaire = 6
       else if(salairereference < 4.5*SSM)
         categoriesalaire = 7
-      this.setState({salairereference:salairereference,categoriesalaire:categoriesalaire})
+
+
+      var categorie = this.getCategorie(this.state.values.structure, categoriesalaire, this.state.values.numeroenfant)
+      var valeur = this.getValeur(categoriesalaire)
+      var nbr = this.state.values.nbrepassemaine
+      var nbh = this.state.values.nbhsemaine
+
+      var tarifh = this.state.values.tarifhoraire
+      var tarifrepas = this.state.values.tarifrepas
+
+      var nbag = nbh > valeur["ag"] ? valeur["ag"] : nbh
+      var nbcs = nbh - nbag > valeur["cs"] ? valeur["cs"] : nbh - nbag
+      var nbsf = nbh - nbag - nbcs > valeur["sf"] ? valeur["sf"] : nbh - nbag - nbcs
+      var nbpt = nbh - nbag - nbcs - nbsf
+
+      var tariffacture = nbcs * categorie["cs"] + nbsf * categorie["sf"] + nbpt * categorie["pt"]
+
+      console.log("nbh:"+nbag+" "+nbcs+" "+nbsf+" "+nbpt)
+      this.setState({categorie:categorie,valeur:valeur,tariffacture:tariffacture}, () => {
+        console.log(this.state)
+      })
+    }
+
+    getCategorie(structure, categoriesalaire, numeroenfant) {
+      var str = str4;
+      if(structure == 1)
+        str = str1
+      if(structure == 2)
+        str = str2
+      if(structure == 3)
+        str = str3
+
+      return str[categoriesalaire][numeroenfant]
+    }
+
+    getValeur(categoriesalaire) {
+      if(categoriesalaire > 5)
+        return valeurs["1"]
+      else if(categoriesalaire < 1)
+        return valeurs["2"]
+      else return valeurs["0"]
     }
 
     conversionInput(value) {
-      return value ? parseFloat(value) : 0
+      return value ? value : 0
     }
 
     render() {
         return (
             <div>
-                <h1>Creche</h1>
-                <h2>Salaire de référence</h2>
-                <div className="row">
-                  <div className="col-xs-6">
-                    <h3>3 dernières fiches de paye</h3>
-                    <div className="col-xs-6">
-                      <InputText label="salaireM11" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
-                      <InputText label="salaireM12" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
-                      <InputText label="salaireM13" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
-                    </div>
-                    <div className="col-xs-6">
-                      <InputText label="salaireM21" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
-                      <InputText label="salaireM22" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
-                      <InputText label="salaireM23" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
-                    </div>
-                  </div>
-                  <div className="col-xs-6">
-                    <h3>Salaire imposable annuelle</h3>
-                    <InputText label="salaireA1" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
-                    <InputText label="salaireA2" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
-                  </div>
+              <div className="row">
+                <div className="col-xs-12">
+                  <h1><FormattedMessage id="creche.title" /></h1>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-12 col-sm-6">
+                  <h3>3 dernières fiches de paye</h3>
                   <div className="row">
-                    <div className="col-xs-12">
-                      <button type="button" onClick={this.calculSalaireRerefence.bind(this)} className="btn btn-primary">Calcul salaire de référence</button>
+                    <div className="col-xs-12 col-sm-6">
+                      <InputEuro label="salaireM11" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
+                      <InputEuro label="salaireM12" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
+                      <InputEuro label="salaireM13" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
+                      <InputEuro label="salaireA1" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-xs-12">
-                      {this.state.salairereference} €
-                      categorie : {this.state.categoriesalaire}
+                    <div className="col-xs-12 col-sm-6">
+                      <InputEuro label="salaireM21" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
+                      <InputEuro label="salaireM22" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
+                      <InputEuro label="salaireM23" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
+                      <InputEuro label="salaireA2" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
                     </div>
                   </div>
                 </div>
 
+                <div className="col-xs-12 col-sm-3">
+                  <h3>Enfant</h3>
+                  <InputNb label="nbrepassemaine" onChange={this.handleFieldChange.bind(this,"nbrepassemaine")}  />
+                  <InputNb label="nbhsemaine" onChange={this.handleFieldChange.bind(this,"nbhsemaine")}  />
+                  <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="numeroenfant" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <h3>Creche</h3>
+                  <InputSelect values={[[1, "Stucture conventionnée, enfant non scolarisé"], [2, "Stucture conventionnée, enfant scolarisé"], [3, "Stucture non conventionnée, enfant non scolarisé"], [4, "Stucture non conventionnée, enfant scolarisé"]]} label="structure" onChange={this.handleFieldChange.bind(this,"structure")}  />
+                  <InputEuro label="tarifhoraire" onChange={this.handleFieldChange.bind(this,"tarifhoraire")}  />
+                  <InputEuro label="tarifrepas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-12">
+                  <button type="button" onClick={this.calculSalaireRerefence.bind(this)} className="btn btn-primary">Calcul</button>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-12">
+                  {this.state.tariffacture} €
+                </div>
+              </div>
             </div>
         )
     }

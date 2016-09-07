@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-export default class InputText extends Component {
+export default class InputSelect extends Component {
     state = {
         classError: "form-group"
     }
@@ -24,7 +24,12 @@ export default class InputText extends Component {
     render() {
         return (
             <div className={this.state.classError}>
-                <input placeholder={this.props.label} type="text" onChange={this.handleChange.bind(this)} className="form-control" value={this.props.value}/>
+                  <select className="form-control input-sm" onChange={this.handleChange.bind(this)}>
+                    <option value="" disabled selected>{this.props.label}</option>
+                      {this.props.values.map((value) =>
+                        <option key={value[0]} value={value[0]}>{value[1]}</option>
+                      )}
+                  </select>
                   {this.props.error ?
                     <span className="help-block">{this.props.error}</span>
                       : []
@@ -34,9 +39,9 @@ export default class InputText extends Component {
     }
 }
 
-InputText.propTypes = {
+InputSelect.propTypes = {
     onChange: React.PropTypes.func.isRequired,
     label: React.PropTypes.string.isRequired,
-    value: React.PropTypes.string,
+    values: React.PropTypes.array.isRequired,
     error:React.PropTypes.string,
 };

@@ -11,7 +11,7 @@ const GLOBALS = {
 };
 
 module.exports = {
-    devtool: DEBUG ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
+    devtool: DEBUG ? 'cheap-eval-source-map' : 'cheap-module-source-map',
     entry: {
         app: './src/router.jsx',
         vendor: ["react", "react-dom", "react-bootstrap", "react-router", "react-intl", "react-router-bootstrap", "intl", "react-intl/locale-data/fr", "react-intl/locale-data/en", "jquery", "bootstrap-datepicker"]

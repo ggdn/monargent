@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-export default class InputText extends Component {
+export default class InputNb extends Component {
     state = {
         classError: "form-group"
     }
@@ -12,7 +12,7 @@ export default class InputText extends Component {
     }
 
     handleChange(event) {
-        this.props.onChange(event.target.value);
+        this.props.onChange(event.target.value ? parseInt(event.target.value) : 0);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,19 +24,19 @@ export default class InputText extends Component {
     render() {
         return (
             <div className={this.state.classError}>
-                <input placeholder={this.props.label} type="text" onChange={this.handleChange.bind(this)} className="form-control" value={this.props.value}/>
-                  {this.props.error ?
-                    <span className="help-block">{this.props.error}</span>
-                      : []
-                  }
+                  <input placeholder={this.props.label} type="number" onChange={this.handleChange.bind(this)} className="form-control input-sm" value={this.props.value}/>
+                    {this.props.error ?
+                      <span className="help-block">{this.props.error}</span>
+                        : []
+                    }
             </div>
         )
     }
 }
 
-InputText.propTypes = {
+InputNb.propTypes = {
     onChange: React.PropTypes.func.isRequired,
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    error:React.PropTypes.string,
+    error:React.PropTypes.string
 };

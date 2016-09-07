@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import BootstrapDatePicker from 'bootstrap-datepicker'
 import BootstrapDatePickerCss from 'bootstrap-datepicker/dist/css/bootstrap-datepicker3.css'
-import {FormattedMessage} from 'react-intl'
 import $ from 'jquery'
 
 export default class InputDate extends Component {
@@ -14,7 +13,7 @@ export default class InputDate extends Component {
             this.handleChange(e);
         });
         this.setState({
-            classError: this.props.errors.length > 0 ? "form-group has-error" : "form-group",
+            classError: this.props.error ? "form-group has-error" : "form-group",
         })
     }
 
@@ -24,21 +23,21 @@ export default class InputDate extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({
-            classError: nextProps.errors.length > 0 ? "form-group has-error" : "form-group",
+            classError: nextProps.error ? "form-group has-error" : "form-group",
         })
     }
 
     render() {
         return (
-            <div className={this.state.classError} id={this.props.id+"_field"}>
-                <label htmlFor={this.props.id}><FormattedMessage id={this.props.label} /></label>
+            <div className={this.state.classError}>
                 <div className="input-group">
                     <div className="input-group-addon"><span className="glyphicon glyphicon-calendar" aria-hidden="true"></span></div>
-                    <input ref="inputDate" type="text" className="form-control" id={this.props.id} name={this.props.id} value={this.props.value} data-provide="datepicker" data-date-language=""/>
+                    <input placeholder={this.props.label} ref="inputDate" type="text" className="form-control" id={this.props.id} name={this.props.id} value={this.props.value} data-provide="datepicker" data-date-language=""/>
                 </div>
-                {this.props.errors.map((el, i) =>
-                    <span className="help-block" key={i}>{el}</span>
-                )}
+                {this.props.error ?
+                  <span className="help-block">{this.props.error}</span>
+                    : []
+                }
             </div>
         )
     }
@@ -48,8 +47,6 @@ InputDate.propTypes = {
     id: React.PropTypes.string.isRequired,
     label: React.PropTypes.string.isRequired,
     value: React.PropTypes.string,
-    errors:React.PropTypes.array.isRequired,
+    error:React.PropTypes.string,
     onChange:React.PropTypes.func
 };
-
-InputDate.defaultProps = { errors: [] };
