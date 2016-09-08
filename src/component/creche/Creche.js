@@ -19,7 +19,7 @@ export default class Creche extends Component {
       tariffacture:0,
       categorie:{},
       valeur:{},
-      values :{},
+      values :{}
     }
 
     handleFieldChange(fieldId, value) {
@@ -42,6 +42,8 @@ export default class Creche extends Component {
       else
         salairereference = salairemensuelle>salaireannuelle ? salaireannuelle : salairemensuelle
 
+      this.setState({salairereference:salairereference})
+
       var categoriesalaire = 8
       if(salairereference < SSM)
         categoriesalaire = 0
@@ -60,31 +62,60 @@ export default class Creche extends Component {
       else if(salairereference < 4.5*SSM)
         categoriesalaire = 7
 
+      this.setState({categoriesalaire:categoriesalaire})
 
       var categorie = this.getCategorie(this.state.values.structure, categoriesalaire, this.state.values.numeroenfant)
       var valeur = this.getValeur(categoriesalaire)
+
+      this.setState({categorie:categorie,valeur:valeur,structure:this.state.values.structure})
+
       var nbr = this.state.values.nbrepassemaine
-      var nbh = this.state.values.nbhsemaine
+      var tarifcrecherepas = this.state.values.tarifrepas
+      var prixparrepas = this.getPrix(tarifcrecherepas,categorie["rp"])
+      var prixrepas = nbr * prixparrepas
+      this.setState({prixrepas:prixrepas, prixparrepas:prixparrepas,nbr:nbr})
 
       var tarifh = this.state.values.tarifhoraire
-      var tarifrepas = this.state.values.tarifrepas
 
+
+      this.setState({tarifh:tarifh})
+
+      var nbh = this.state.values.nbhsemaine
       var nbag = nbh > valeur["ag"] ? valeur["ag"] : nbh
       var nbcs = nbh - nbag > valeur["cs"] ? valeur["cs"] : nbh - nbag
       var nbsf = nbh - nbag - nbcs > valeur["sf"] ? valeur["sf"] : nbh - nbag - nbcs
       var nbpt = nbh - nbag - nbcs - nbsf
+      this.setState({nbag:nbag,nbcs:nbcs,nbsf:nbsf,nbpt:nbpt,nbh:nbh})
 
-      var prixrepas = nbr * this.getPrix(tarifrepas,categorie["rp"])
+      var p_cs = this.getPrix(tarifh,categorie["cs"])
+      var p_sf = this.getPrix(tarifh,categorie["sf"])
+      var p_pt = this.getPrix(tarifh,categorie["pt"])
+      this.setState({p_cs:p_cs,p_sf:p_sf,p_pt:p_pt})
 
-      var supplement = tarifh > categorie["pt"] ? (tarifh - categorie["pt"]) * nbpt : 0
 
-      var tariffacture = prixrepas + supplement + nbcs * this.getPrix(tarifh,categorie["cs"]) + nbsf * this.getPrix(tarifh,categorie["sf"]) + nbpt * this.getPrix(tarifh,categorie["pt"])
+      var supplement = tarifh > categorie["pt"] ? (tarifh - categorie["pt"]) * nbh : 0
 
-      this.setState({categorie:categorie,valeur:valeur,tariffacture:tariffacture})
+      this.setState({supplement:supplement})
+
+      var tariffacture = prixrepas + supplement + nbcs * p_cs + nbsf * p_sf + nbpt * p_pt
+
+      this.setState({tariffacture:tariffacture})
     }
 
     getPrix(prixhcreche, participationparental) {
       return prixhcreche < participationparental ? prixhcreche : participationparental
+    }
+
+    getLien(structure) {
+      var str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-non-conventionnees-enfants-scolarises.pdf";
+      if(structure == 1)
+        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-conventionnees-enfants-non-scolarises.pdf"
+      if(structure == 2)
+        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-conventionnees-enfants-scolarises.pdf"
+      if(structure == 3)
+        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-non-conventionnees-enfants-non-scolarises.pdf"
+
+      return str
     }
 
     getCategorie(structure, categoriesalaire, numeroenfant) {
@@ -122,7 +153,8 @@ export default class Creche extends Component {
                   <div className="bs-callout bs-callout-info">
                     <p>Vous trouverez ici un simulateur pour estimer le coût de la crêche de votre enfant au luxembourg.
                     <br/>Le simulateur se base sur les articles publiés sur le site du <a href="http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service-tarification/index.html">guichet.lu</a>
-                    <br/>Dernière mise à jour des indices : Aout 2016</p>
+                    <br/>Les données sont données à titre indicatif
+                    <br/>Dernière mise à jour des indices : <b>Aout 2016</b> | Ce service est actuellement en <b>beta</b></p>
                   </div>
                 </div>
               </div>
@@ -196,11 +228,32 @@ export default class Creche extends Component {
                   <button type="button" onClick={this.calculSalaireRerefence.bind(this)} className="btn btn-primary">Calcul</button>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-xs-12">
-                  {this.state.tariffacture} €
+              {this.state.tariffacture ?
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div className="alert alert-success">
+                      Votre participation hebdomadaire s'élève à : {this.state.tariffacture} € soit {this.state.tariffacture*4} € par mois
+                    </div>
+                    <h4>Explications :</h4>
+                    <p>Salaire mensuel de référence : {this.state.salairereference}€.</p>
+                    <p>Vous avez donc le droit à :</p>
+                    <ul>
+                      <li>{this.state.nbag}h en accès gratuit</li>
+                      <li>{this.state.nbcs}h au tarif chèque service : {this.state.p_cs}€/h. Total {this.state.nbcs*this.state.p_cs}€</li>
+                      <li>{this.state.nbsf}h au tarif socio-familial : {this.state.p_sf}€/h. Total {this.state.nbsf*this.state.p_sf}€</li>
+                      <li>{this.state.nbpt}h en plein tarif : {this.state.p_pt}€/h. Total {this.state.nbpt*this.state.p_pt}€</li>
+                      <li>{this.state.nbr} repas au tarif de {this.state.prixparrepas}€/repas. Total {this.state.prixrepas*this.state.nbr}€</li>
+                      {this.state.supplement >0 ?
+                        <li>La creche propose un tarif horaire supérieur ({this.state.tarifh}€/h) à ce que l'état prend en charge ({this.state.p_pt}€/h). Cette différence est à vos frais. Total {this.state.supplement}€</li>
+                        : []
+                      }
+
+                    </ul>
+                    <p>Vous trouverez ces informations sur le lien officiel <a target="_blank" href={this.getLien(this.state.structure)}>ici</a></p>
+                  </div>
                 </div>
-              </div>
+              : []
+              }
               <div id="disqus_thread"></div>
             </div>
         )

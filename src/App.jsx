@@ -56,7 +56,7 @@ export default class App extends Component {
                                 </Nav>
                                 <Nav pullRight>
                                     <NavItem eventKey={1} onClick={this.handleClick.bind(this,"fr")}>fr</NavItem>
-                                    <NavItem eventKey={2} onClick={this.handleClick.bind(this,"en")}>en</NavItem>
+                                    {/* <NavItem eventKey={2} onClick={this.handleClick.bind(this,"en")}>en</NavItem> */}
                                 </Nav>
                             </Navbar.Collapse>
                     </Navbar>
