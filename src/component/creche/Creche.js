@@ -74,7 +74,11 @@ export default class Creche extends Component {
       var nbsf = nbh - nbag - nbcs > valeur["sf"] ? valeur["sf"] : nbh - nbag - nbcs
       var nbpt = nbh - nbag - nbcs - nbsf
 
-      var tariffacture = nbcs * this.getPrix(tarifh,categorie["cs"]) + nbsf * this.getPrix(tarifh,categorie["sf"]) + nbpt * this.getPrix(tarifh,categorie["pt"])
+      var prixrepas = nbr * this.getPrix(tarifrepas,categorie["rp"])
+
+      var supplement = tarifh > categorie["pt"] ? (tarifh - categorie["pt"]) * nbpt : 0
+
+      var tariffacture = prixrepas + supplement + nbcs * this.getPrix(tarifh,categorie["cs"]) + nbsf * this.getPrix(tarifh,categorie["sf"]) + nbpt * this.getPrix(tarifh,categorie["pt"])
 
       this.setState({categorie:categorie,valeur:valeur,tariffacture:tariffacture})
     }
