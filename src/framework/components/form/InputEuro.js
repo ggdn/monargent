@@ -24,9 +24,10 @@ export default class InputEuro extends Component {
     render() {
         return (
             <div className={this.state.classError}>
+                <label>{this.props.label}</label>
                 <div className="input-group">
                   <div className="input-group-addon">€</div>
-                  <input placeholder={this.props.label} type="number" step="0.01" onChange={this.handleChange.bind(this)} className="form-control input-sm" value={this.props.value}/>
+                  <input type="number" step="0.01" onChange={this.handleChange.bind(this)} className="form-control input-sm" value={this.props.value}/>
                 </div>
                 {this.props.error ?
                   <span className="help-block">{this.props.error}</span>

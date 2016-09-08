@@ -24,7 +24,8 @@ export default class InputNb extends Component {
     render() {
         return (
             <div className={this.state.classError}>
-                  <input placeholder={this.props.label} type="number" onChange={this.handleChange.bind(this)} className="form-control input-sm" value={this.props.value}/>
+                <label>{this.props.label}</label>
+                  <input type="number" onChange={this.handleChange.bind(this)} className="form-control input-sm" value={this.props.value}/>
                     {this.props.error ?
                       <span className="help-block">{this.props.error}</span>
                         : []

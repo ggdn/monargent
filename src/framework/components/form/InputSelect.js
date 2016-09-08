@@ -24,8 +24,9 @@ export default class InputSelect extends Component {
     render() {
         return (
             <div className={this.state.classError}>
+              <label>{this.props.label}</label>
                   <select className="form-control input-sm" onChange={this.handleChange.bind(this)}>
-                    <option value="" disabled selected>{this.props.label}</option>
+                    <option></option>
                       {this.props.values.map((value) =>
                         <option key={value[0]} value={value[0]}>{value[1]}</option>
                       )}

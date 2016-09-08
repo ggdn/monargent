@@ -19,7 +19,7 @@ export default class Creche extends Component {
       tariffacture:0,
       categorie:{},
       valeur:{},
-      values :{}
+      values :{},
     }
 
     handleFieldChange(fieldId, value) {
@@ -114,40 +114,80 @@ export default class Creche extends Component {
     render() {
         return (
             <div>
+              <div className="row col-xs-12">
+                <h2><FormattedMessage id="creche.title" /></h2>
+              </div>
               <div className="row">
                 <div className="col-xs-12">
-                  <h1><FormattedMessage id="creche.title" /></h1>
+                  <div className="bs-callout bs-callout-info">
+                    <p>Vous trouverez ici un simulateur pour estimer le coût de la crêche de votre enfant au luxembourg.
+                    <br/>Le simulateur se base sur les articles publiés sur le site du <a href="http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service-tarification/index.html">guichet.lu</a>
+                    <br/>Dernière mise à jour des indices : Aout 2016</p>
+                  </div>
+                </div>
+              </div>
+              <div className="row col-xs-12">
+                <h3>Salaire du ménage</h3>
+              </div>
+              <div className="row">
+                <div className="col-xs-12">
+                  <div className="bs-callout bs-callout-warning">
+                    <p>Renseignez ici les trois dernières fiches de paye et/ou le salaire annuel de vous et de votre conjoint
+                    <br/>Le systeme prendra automatiquement le plus faible salaire mensuel moyen
+                    <br/>Attention : il s'agit à chaque fois du salaire <b>imposable</b></p>
+                  </div>
                 </div>
               </div>
               <div className="row">
-                <div className="col-xs-12 col-sm-6">
-                  <h3>3 dernières fiches de paye</h3>
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-6">
-                      <InputEuro label="salaireM11" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
-                      <InputEuro label="salaireM12" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
-                      <InputEuro label="salaireM13" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
-                      <InputEuro label="salaireA1" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
-                    </div>
-                    <div className="col-xs-12 col-sm-6">
-                      <InputEuro label="salaireM21" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
-                      <InputEuro label="salaireM22" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
-                      <InputEuro label="salaireM23" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
-                      <InputEuro label="salaireA2" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
-                    </div>
-                  </div>
-                </div>
-
                 <div className="col-xs-12 col-sm-3">
-                  <h3>Enfant</h3>
+                  <InputEuro label="salaireM11" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireM12" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireM13" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireA1" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireM21" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireM22" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireM23" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputEuro label="salaireA2" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
+                </div>
+              </div>
+              <div className="row col-xs-12">
+                <h3>Creche</h3>
+              </div>
+              <div className="row">
+                <div className="col-xs-12 col-sm-3">
                   <InputNb label="nbrepassemaine" onChange={this.handleFieldChange.bind(this,"nbrepassemaine")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
                   <InputNb label="nbhsemaine" onChange={this.handleFieldChange.bind(this,"nbhsemaine")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
                   <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="numeroenfant" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
                 </div>
+              </div>
+              <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <h3>Creche</h3>
                   <InputSelect values={[[1, "Stucture conventionnée, enfant non scolarisé"], [2, "Stucture conventionnée, enfant scolarisé"], [3, "Stucture non conventionnée, enfant non scolarisé"], [4, "Stucture non conventionnée, enfant scolarisé"]]} label="structure" onChange={this.handleFieldChange.bind(this,"structure")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
                   <InputEuro label="tarifhoraire" onChange={this.handleFieldChange.bind(this,"tarifhoraire")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
                   <InputEuro label="tarifrepas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
                 </div>
               </div>
@@ -161,11 +201,8 @@ export default class Creche extends Component {
                   {this.state.tariffacture} €
                 </div>
               </div>
+              <div id="disqus_thread"></div>
             </div>
         )
     }
-}
-
-Creche.propTypes = {
-
 }
