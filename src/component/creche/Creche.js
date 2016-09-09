@@ -172,30 +172,30 @@ export default class Creche extends Component {
               </div>
               <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM11" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
+                  <InputEuro label="Conjoint 1: Salaire mensuel 1" onChange={this.handleFieldChange.bind(this,"salaireM11")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM12" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
+                  <InputEuro label="Salaire mensuel 2" onChange={this.handleFieldChange.bind(this,"salaireM12")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM13" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
+                  <InputEuro label="Salaire mensuel 3" onChange={this.handleFieldChange.bind(this,"salaireM13")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireA1" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
+                  <InputEuro label="Salaire annuel" onChange={this.handleFieldChange.bind(this,"salaireA1")}  />
                 </div>
               </div>
               <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM21" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
+                  <InputEuro label="Conjoint 2: Salaire mensuel 1" onChange={this.handleFieldChange.bind(this,"salaireM21")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM22" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
+                  <InputEuro label="Salaire mensuel 2" onChange={this.handleFieldChange.bind(this,"salaireM22")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireM23" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
+                  <InputEuro label="Salaire mensuel 3" onChange={this.handleFieldChange.bind(this,"salaireM23")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="salaireA2" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
+                  <InputEuro label="Salaire annuel" onChange={this.handleFieldChange.bind(this,"salaireA2")}  />
                 </div>
               </div>
               <div className="row col-xs-12">
@@ -203,24 +203,24 @@ export default class Creche extends Component {
               </div>
               <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <InputNb label="nbrepassemaine" onChange={this.handleFieldChange.bind(this,"nbrepassemaine")}  />
+                  <InputNb label="Nombre de repas par semaine" onChange={this.handleFieldChange.bind(this,"nbrepassemaine")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputNb label="nbhsemaine" onChange={this.handleFieldChange.bind(this,"nbhsemaine")}  />
+                  <InputNb label="Nombre d'heure par semaine" onChange={this.handleFieldChange.bind(this,"nbhsemaine")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="numeroenfant" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
+                  <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="Rang de l'enfant" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
                 </div>
               </div>
               <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <InputSelect values={[[1, "Stucture conventionnée, enfant non scolarisé"], [2, "Stucture conventionnée, enfant scolarisé"], [3, "Stucture non conventionnée, enfant non scolarisé"], [4, "Stucture non conventionnée, enfant scolarisé"]]} label="structure" onChange={this.handleFieldChange.bind(this,"structure")}  />
+                  <InputSelect values={[[1, "Stucture conventionnée, enfant non scolarisé"], [2, "Stucture conventionnée, enfant scolarisé"], [3, "Stucture non conventionnée, enfant non scolarisé"], [4, "Stucture non conventionnée, enfant scolarisé"]]} label="Type de structure" onChange={this.handleFieldChange.bind(this,"structure")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="tarifhoraire" onChange={this.handleFieldChange.bind(this,"tarifhoraire")}  />
+                  <InputEuro label="Tarif horaire" onChange={this.handleFieldChange.bind(this,"tarifhoraire")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputEuro label="tarifrepas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
+                  <InputEuro label="Tarif repas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
                 </div>
               </div>
               <div className="row">
@@ -229,27 +229,27 @@ export default class Creche extends Component {
                 </div>
               </div>
               {this.state.tariffacture ?
-                <div className="row">
-                  <div className="col-xs-12">
-                    <div className="alert alert-success">
-                      Votre participation hebdomadaire s'élève à : {this.state.tariffacture} € soit {this.state.tariffacture*4} € par mois
-                    </div>
-                    <h4>Explications :</h4>
-                    <p>Salaire mensuel de référence : {this.state.salairereference}€.</p>
-                    <p>Vous avez donc le droit à :</p>
-                    <ul>
-                      <li>{this.state.nbag}h en accès gratuit</li>
-                      <li>{this.state.nbcs}h au tarif chèque service : {this.state.p_cs}€/h. Total {this.state.nbcs*this.state.p_cs}€</li>
-                      <li>{this.state.nbsf}h au tarif socio-familial : {this.state.p_sf}€/h. Total {this.state.nbsf*this.state.p_sf}€</li>
-                      <li>{this.state.nbpt}h en plein tarif : {this.state.p_pt}€/h. Total {this.state.nbpt*this.state.p_pt}€</li>
-                      <li>{this.state.nbr} repas au tarif de {this.state.prixparrepas}€/repas. Total {this.state.prixrepas*this.state.nbr}€</li>
-                      {this.state.supplement >0 ?
-                        <li>La creche propose un tarif horaire supérieur ({this.state.tarifh}€/h) à ce que l'état prend en charge ({this.state.p_pt}€/h). Cette différence est à vos frais. Total {this.state.supplement}€</li>
-                        : []
-                      }
-
-                    </ul>
-                    <p>Vous trouverez ces informations sur le lien officiel <a target="_blank" href={this.getLien(this.state.structure)}>ici</a></p>
+              <div className="row">
+                <br/>
+                <div className="col-xs-12">
+                  <div className="alert alert-success">
+                    Votre participation hebdomadaire s'élève à : {this.state.tariffacture} € soit {this.state.tariffacture*4} € par mois
+                  </div>
+                  <h4>Explications :</h4>
+                  <p>Salaire mensuel de référence : {this.state.salairereference}€.</p>
+                  <p>Vous avez donc le droit à :</p>
+                  <ul>
+                    <li>{this.state.nbag}h en accès gratuit</li>
+                    <li>{this.state.nbcs}h au tarif chèque service : {this.state.p_cs}€/h. Total {this.state.nbcs*this.state.p_cs}€</li>
+                    <li>{this.state.nbsf}h au tarif socio-familial : {this.state.p_sf}€/h. Total {this.state.nbsf*this.state.p_sf}€</li>
+                    <li>{this.state.nbpt}h en plein tarif : {this.state.p_pt}€/h. Total {this.state.nbpt*this.state.p_pt}€</li>
+                    <li>{this.state.nbr} repas au tarif de {this.state.prixparrepas}€/repas. Total {this.state.prixrepas*this.state.nbr}€</li>
+                    {this.state.supplement >0 ?
+                    <li>La creche propose un tarif horaire supérieur ({this.state.tarifh}€/h) à ce que l'état prend en charge ({this.state.p_pt}€/h). Cette différence est à vos frais. Total {this.state.supplement}€</li>
+                    : []
+                    }
+                  </ul>
+                  <p>Vous trouverez ces informations sur le lien officiel <a target="_blank" href={this.getLien(this.state.structure)}>ici</a></p>
                   </div>
                 </div>
               : []
