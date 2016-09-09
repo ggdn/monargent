@@ -19,7 +19,8 @@ export default class Creche extends Component {
       tariffacture:0,
       categorie:{},
       valeur:{},
-      values :{}
+      values :{},
+      errors:[]
     }
 
     handleFieldChange(fieldId, value) {
@@ -29,6 +30,9 @@ export default class Creche extends Component {
     }
 
     calculSalaireRerefence(){
+
+      this.setState({errors:[]})
+
       var salairemensuelle1 = (this.conversionInput(this.state.values.salaireM11) + this.conversionInput(this.state.values.salaireM12) + this.conversionInput(this.state.values.salaireM13)) / 3
       var salairemensuelle2 = (this.conversionInput(this.state.values.salaireM21) + this.conversionInput(this.state.values.salaireM22) + this.conversionInput(this.state.values.salaireM23)) / 3
       var salairemensuelle = salairemensuelle1 + salairemensuelle2
@@ -41,6 +45,7 @@ export default class Creche extends Component {
         salairereference = salairemensuelle
       else
         salairereference = salairemensuelle>salaireannuelle ? salaireannuelle : salairemensuelle
+      
 
       this.setState({salairereference:salairereference})
 
