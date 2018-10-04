@@ -1,17 +1,13 @@
-import React, {Component, PropTypes} from 'react';
-import InputDate from '../../framework/components/form/InputDate.jsx'
-import InputText from '../../framework/components/form/InputText.jsx'
+import React, {Component} from 'react';
 import InputEuro from '../../framework/components/form/InputEuro'
 import InputNb from '../../framework/components/form/InputNb'
 import InputSelect from '../../framework/components/form/InputSelect'
 import {FormattedMessage} from 'react-intl';
 import valeurs from '../../baremes/valeur.json';
-import str2 from '../../baremes/structures-conventionnees-enfants-scolarises.json';
-import str1 from '../../baremes/structures-conventionnees-enfants-non-scolarises.json';
-import str4 from '../../baremes/structures-non-conventionnees-enfants-scolarises.json';
-import str3 from '../../baremes/structures-non-conventionnees-enfants-non-scolarises.json';
+import str from '../../baremes/valeurs.json';
 
-const SSM = 1922.96
+const SSM = 2048.54;
+const Plafondaidetat = 6;
 
 export default class Creche extends Component {
 
@@ -21,126 +17,104 @@ export default class Creche extends Component {
       valeur:{},
       values :{},
       errors:[]
-    }
+    };
 
     handleFieldChange(fieldId, value) {
-      var fieldS = this.state.values
-      fieldS[fieldId] = value
+      var fieldS = this.state.values;
+      fieldS[fieldId] = value;
       this.setState({values:fieldS})
     }
 
     calculSalaireRerefence(){
 
-      this.setState({errors:[]})
+      this.setState({errors:[]});
 
-      var salairemensuelle1 = (this.conversionInput(this.state.values.salaireM11) + this.conversionInput(this.state.values.salaireM12) + this.conversionInput(this.state.values.salaireM13)) / 3
-      var salairemensuelle2 = (this.conversionInput(this.state.values.salaireM21) + this.conversionInput(this.state.values.salaireM22) + this.conversionInput(this.state.values.salaireM23)) / 3
-      var salairemensuelle = salairemensuelle1 + salairemensuelle2
+      var salairemensuelle1 = (this.conversionInput(this.state.values.salaireM11) + this.conversionInput(this.state.values.salaireM12) + this.conversionInput(this.state.values.salaireM13)) / 3;
+      var salairemensuelle2 = (this.conversionInput(this.state.values.salaireM21) + this.conversionInput(this.state.values.salaireM22) + this.conversionInput(this.state.values.salaireM23)) / 3;
+      var salairemensuelle = salairemensuelle1 + salairemensuelle2;
 
-      var salaireannuelle = (this.conversionInput(this.state.values.salaireA1) + this.conversionInput(this.state.values.salaireA2)) / 12
-      var salairereference = 0
+      var salaireannuelle = (this.conversionInput(this.state.values.salaireA1) + this.conversionInput(this.state.values.salaireA2)) / 12;
+      var salairereference = 0;
       if(salaireannuelle && !salairemensuelle)
-        salairereference = salaireannuelle
+        salairereference = salaireannuelle;
       else if(!salaireannuelle && salairemensuelle)
-        salairereference = salairemensuelle
+        salairereference = salairemensuelle;
       else
-        salairereference = salairemensuelle>salaireannuelle ? salaireannuelle : salairemensuelle
+        salairereference = salairemensuelle>salaireannuelle ? salaireannuelle : salairemensuelle;
       
 
-      this.setState({salairereference:salairereference})
+      this.setState({salairereference:salairereference});
 
-      var categoriesalaire = 8
+      var categoriesalaire = 8;
       if(salairereference < SSM)
-        categoriesalaire = 0
+        categoriesalaire = 0;
       else if(salairereference < 1.5*SSM)
-        categoriesalaire = 1
+        categoriesalaire = 1;
       else if(salairereference < 2*SSM)
-        categoriesalaire = 2
+        categoriesalaire = 2;
       else if(salairereference < 2.5*SSM)
-        categoriesalaire = 3
+        categoriesalaire = 3;
       else if(salairereference < 3*SSM)
-        categoriesalaire = 4
+        categoriesalaire = 4;
       else if(salairereference < 3.5*SSM)
-        categoriesalaire = 5
+        categoriesalaire = 5;
       else if(salairereference < 4*SSM)
-        categoriesalaire = 6
+        categoriesalaire = 6;
       else if(salairereference < 4.5*SSM)
-        categoriesalaire = 7
+        categoriesalaire = 7;
 
-      this.setState({categoriesalaire:categoriesalaire})
+      this.setState({categoriesalaire:categoriesalaire});
 
-      var categorie = this.getCategorie(this.state.values.structure, categoriesalaire, this.state.values.numeroenfant)
-      var valeur = this.getValeur(categoriesalaire)
+      var categorie = this.getCategorie(categoriesalaire, this.state.values.numeroenfant);
+      var valeur = valeurs[categoriesalaire];
 
-      this.setState({categorie:categorie,valeur:valeur,structure:this.state.values.structure})
+      this.setState({categorie:categorie,valeur:valeur});
 
-      var nbr = this.state.values.nbrepassemaine
-      var tarifcrecherepas = this.state.values.tarifrepas
-      var prixparrepas = this.getPrix(tarifcrecherepas,categorie["rp"])
-      var prixrepas = nbr * prixparrepas
-      this.setState({prixrepas:prixrepas, prixparrepas:prixparrepas,nbr:nbr})
+      var nbr = this.state.values.nbrepassemaine;
+      var tarifcrecherepas = this.state.values.tarifrepas;
+      var prixparrepas = this.getPrix(tarifcrecherepas,categorie["rp"]);
+      var prixrepas = nbr * prixparrepas;
+      this.setState({prixrepas:prixrepas, prixparrepas:prixparrepas,nbr:nbr});
 
-      var tarifh = this.state.values.tarifhoraire
-
-
-      this.setState({tarifh:tarifh})
-
-      var nbh = this.state.values.nbhsemaine
-      var nbag = nbh > valeur["ag"] ? valeur["ag"] : nbh
-      var nbcs = nbh - nbag > valeur["cs"] ? valeur["cs"] : nbh - nbag
-      var nbsf = nbh - nbag - nbcs > valeur["sf"] ? valeur["sf"] : nbh - nbag - nbcs
-      var nbpt = nbh - nbag - nbcs - nbsf
-      this.setState({nbag:nbag,nbcs:nbcs,nbsf:nbsf,nbpt:nbpt,nbh:nbh})
-
-      var p_cs = this.getPrix(tarifh,categorie["cs"])
-      var p_sf = this.getPrix(tarifh,categorie["sf"])
-      var p_pt = this.getPrix(tarifh,categorie["pt"])
-      this.setState({p_cs:p_cs,p_sf:p_sf,p_pt:p_pt})
+      var tarifh = this.state.values.tarifhoraire;
 
 
-      var supplement = tarifh > categorie["pt"] ? (tarifh - categorie["pt"]) * nbh : 0
+      this.setState({tarifh:tarifh});
 
-      this.setState({supplement:supplement})
+      var nbh = this.state.values.nbhsemaine;
+      var nbt1 = nbh > valeur["t1"] ? valeur["t1"] : nbh;
+      var nbt2 = nbh - nbt1 > valeur["t2"] ? valeur["t2"] : nbh - nbt1;
+      var nbt3 = nbh - nbt1 - nbt2 > valeur["t3"] ? valeur["t3"] : nbh - nbt1 - nbt2;
+      var nbpt = nbh - nbt1 - nbt2 - nbt3;
+      this.setState({nbt1:nbt1,nbt2:nbt2,nbt3:nbt3,nbpt:nbpt,nbh:nbh});
 
-      var tariffacture = prixrepas + supplement + nbcs * p_cs + nbsf * p_sf + nbpt * p_pt
+      var p_t1 = this.getPrix(tarifh,categorie["t1"]);
+      var p_t2 = this.getPrix(tarifh,categorie["t2"]);
+      var p_t3 = this.getPrix(tarifh,categorie["t3"]);
+      this.setState({p_t1:p_t1,p_t2:p_t2,p_t3:p_t3});
+
+
+      var supplement = tarifh > Plafondaidetat ? (tarifh - Plafondaidetat) * nbh : 0;
+
+      this.setState({supplement:supplement});
+
+      var tariffacture = prixrepas + supplement + nbt1 * p_t1 + nbt2 * p_t2 + nbt3 * p_t3 + nbpt * tarifh;
 
       this.setState({tariffacture:tariffacture})
     }
 
     getPrix(prixhcreche, participationparental) {
+        if(participationparental == "FREE")
+            return 0;
       return prixhcreche < participationparental ? prixhcreche : participationparental
     }
 
-    getLien(structure) {
-      var str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-non-conventionnees-enfants-scolarises.pdf";
-      if(structure == 1)
-        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-conventionnees-enfants-non-scolarises.pdf"
-      if(structure == 2)
-        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-conventionnees-enfants-scolarises.pdf"
-      if(structure == 3)
-        str = "http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service/structures-non-conventionnees-enfants-non-scolarises.pdf"
-
-      return str
+    getLien() {
+      return "http://www.men.public.lu/fr/enfance/02-cheque-service/participation-parents.pdf";
     }
 
-    getCategorie(structure, categoriesalaire, numeroenfant) {
-      var str = str4;
-      if(structure == 1)
-        str = str1
-      if(structure == 2)
-        str = str2
-      if(structure == 3)
-        str = str3
-
+    getCategorie(categoriesalaire, numeroenfant) {
       return str[categoriesalaire][numeroenfant]
-    }
-
-    getValeur(categoriesalaire) {
-      if(categoriesalaire > 5)
-        return valeurs["1"]
-      else if(categoriesalaire < 1)
-        return valeurs["2"]
-      else return valeurs["0"]
     }
 
     conversionInput(value) {
@@ -159,7 +133,7 @@ export default class Creche extends Component {
                     <p>Vous trouverez ici un simulateur pour estimer le coût de la crêche de votre enfant au luxembourg.
                     <br/>Le simulateur se base sur les articles publiés sur le site du <a href="http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service-tarification/index.html">guichet.lu</a>
                     <br/>Les données sont données à titre indicatif
-                    <br/>Dernière mise à jour des indices : <b>Aout 2016</b> | Ce service est actuellement en <b>beta</b></p>
+                    <br/>Dernière mise à jour des indices : <b>Octobre 2018</b> | Ce service est actuellement en <b>beta</b></p>
                   </div>
                 </div>
               </div>
@@ -219,9 +193,6 @@ export default class Creche extends Component {
               </div>
               <div className="row">
                 <div className="col-xs-12 col-sm-3">
-                  <InputSelect values={[[1, "Stucture conventionnée, enfant non scolarisé"], [2, "Stucture conventionnée, enfant scolarisé"], [3, "Stucture non conventionnée, enfant non scolarisé"], [4, "Stucture non conventionnée, enfant scolarisé"]]} label="Type de structure" onChange={this.handleFieldChange.bind(this,"structure")}  />
-                </div>
-                <div className="col-xs-12 col-sm-3">
                   <InputEuro label="Tarif horaire" onChange={this.handleFieldChange.bind(this,"tarifhoraire")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
@@ -244,22 +215,22 @@ export default class Creche extends Component {
                   <p>Salaire mensuel de référence : {this.state.salairereference}€.</p>
                   <p>Vous avez donc le droit à :</p>
                   <ul>
-                    <li>{this.state.nbag}h en accès gratuit</li>
-                    <li>{this.state.nbcs}h au tarif chèque service : {this.state.p_cs}€/h. Total {this.state.nbcs*this.state.p_cs}€</li>
-                    <li>{this.state.nbsf}h au tarif socio-familial : {this.state.p_sf}€/h. Total {this.state.nbsf*this.state.p_sf}€</li>
-                    <li>{this.state.nbpt}h en plein tarif : {this.state.p_pt}€/h. Total {this.state.nbpt*this.state.p_pt}€</li>
+                    <li>{this.state.nbt1}h en tarif 1 : {this.state.p_t1}€/h. Total {this.state.nbt1*this.state.p_t1}€</li>
+                    <li>{this.state.nbt2}h en tarif 2 : {this.state.p_t2}€/h. Total {this.state.nbt2*this.state.p_t2}€</li>
+                    <li>{this.state.nbt3}h en tarif 3 : {this.state.p_t3}€/h. Total {this.state.nbt3*this.state.p_t3}€</li>
+                    <li>{this.state.nbpt}h en plein tarif : {this.state.tarifh}€/h. Total {this.state.nbpt*this.state.tarifh}€</li>
                     <li>{this.state.nbr} repas au tarif de {this.state.prixparrepas}€/repas. Total {this.state.prixrepas*this.state.nbr}€</li>
                     {this.state.supplement >0 ?
-                    <li>La creche propose un tarif horaire supérieur ({this.state.tarifh}€/h) à ce que l'état prend en charge ({this.state.p_pt}€/h). Cette différence est à vos frais. Total {this.state.supplement}€</li>
+                    <li>La creche propose un tarif horaire supérieur ({this.state.tarifh}€/h) à ce que l'état prend en charge ({Plafondaidetat}€/h). Cette différence est à vos frais. Total {this.state.supplement}€</li>
                     : []
                     }
                   </ul>
-                  <p>Vous trouverez ces informations sur le lien officiel <a target="_blank" href={this.getLien(this.state.structure)}>ici</a></p>
+                  <p>Vous trouverez ces informations sur le lien officiel <a target="_blank" href={this.getLien()}>ici</a></p>
                   </div>
                 </div>
               : []
               }
-              <div id="disqus_thread"></div>
+              <div id="disqus_thread" />
             </div>
         )
     }
