@@ -6,7 +6,7 @@ import {FormattedMessage} from 'react-intl';
 import valeurs from '../../baremes/valeur.json';
 import str from '../../baremes/valeurs.json';
 
-const SSM = 2048.54;
+const SSM = 2071.10;
 const Plafondaidetat = 6;
 
 export default class Creche extends Component {
@@ -72,6 +72,7 @@ export default class Creche extends Component {
 
       var nbr = this.state.values.nbrepassemaine;
       var tarifcrecherepas = this.state.values.tarifrepas;
+      var heuresgratuites = this.state.values.heuresgratuites;
       var prixparrepas = this.getPrix(tarifcrecherepas,categorie["rp"]);
       var prixrepas = nbr * prixparrepas;
       this.setState({prixrepas:prixrepas, prixparrepas:prixparrepas,nbr:nbr});
@@ -82,6 +83,7 @@ export default class Creche extends Component {
       this.setState({tarifh:tarifh});
 
       var nbh = this.state.values.nbhsemaine;
+      nbh = nbh - heuresgratuites;
       var nbt1 = nbh > valeur["t1"] ? valeur["t1"] : nbh;
       var nbt2 = nbh - nbt1 > valeur["t2"] ? valeur["t2"] : nbh - nbt1;
       var nbt3 = nbh - nbt1 - nbt2 > valeur["t3"] ? valeur["t3"] : nbh - nbt1 - nbt2;
@@ -197,6 +199,9 @@ export default class Creche extends Component {
                 </div>
                 <div className="col-xs-12 col-sm-3">
                   <InputEuro label="Tarif repas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
+                </div>
+                <div className="col-xs-12 col-sm-3">
+                  <InputNb label="Nombre heures gratuites" onChange={this.handleFieldChange.bind(this,"heuresgratuites")}  />
                 </div>
               </div>
               <div className="row">
