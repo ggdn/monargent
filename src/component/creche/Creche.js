@@ -135,7 +135,7 @@ export default class Creche extends Component {
                     <p>Vous trouverez ici un simulateur pour estimer le coût de la crêche de votre enfant au luxembourg.
                     <br/>Le simulateur se base sur les articles publiés sur le site du <a href="http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service-tarification/index.html">guichet.lu</a>
                     <br/>Les données sont données à titre indicatif
-                    <br/>Dernière mise à jour des indices : <b>Octobre 2018</b> | Ce service est actuellement en <b>beta</b></p>
+                    <br/>Dernière mise à jour des indices : <b>Septembre 2020</b></p>
                   </div>
                 </div>
               </div>
@@ -145,9 +145,12 @@ export default class Creche extends Component {
               <div className="row">
                 <div className="col-xs-12">
                   <div className="bs-callout bs-callout-warning">
-                    <p>Renseignez ici les trois dernières fiches de paye et/ou le salaire annuel de vous et de votre conjoint
-                    <br/>Le systeme prendra automatiquement le plus faible salaire mensuel moyen
-                    <br/>Attention : il s'agit à chaque fois du salaire <b>imposable</b></p>
+                    <p>
+                        Renseignez ici les trois dernières fiches de paye et/ou le salaire annuel de vous et de votre conjoint
+                        <br/>Le systeme prendra automatiquement le plus faible salaire mensuel moyen
+                        <br/>L'ensemble des salaires sous le même toît comptent, que vous soyez pacsés/mariés/célibataires
+                        <br/>Attention : il s'agit à chaque fois du salaire <b>imposable</b>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -190,7 +193,7 @@ export default class Creche extends Component {
                   <InputNb label="Nombre d'heure par semaine" onChange={this.handleFieldChange.bind(this,"nbhsemaine")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="Rang de l'enfant" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
+                  <InputSelect values={[[1, "1"], [2, "2"], [3, "3"], [4, "4+"]]} label="Rang de l'enfant (1 étant votre premier enfant)" onChange={this.handleFieldChange.bind(this,"numeroenfant")}  />
                 </div>
               </div>
               <div className="row">
@@ -201,7 +204,7 @@ export default class Creche extends Component {
                   <InputEuro label="Tarif repas" onChange={this.handleFieldChange.bind(this,"tarifrepas")}  />
                 </div>
                 <div className="col-xs-12 col-sm-3">
-                  <InputNb label="Nombre heures gratuites" onChange={this.handleFieldChange.bind(this,"heuresgratuites")}  />
+                  <InputNb label="Nombre heures gratuites (valable pour un enfant agé de plus d'un an et qui n'est pas scolairisé)" onChange={this.handleFieldChange.bind(this,"heuresgratuites")}  />
                 </div>
               </div>
               <div className="row">
