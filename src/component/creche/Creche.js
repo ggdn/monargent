@@ -84,6 +84,7 @@ export default class Creche extends Component {
 
       var nbh = this.state.values.nbhsemaine;
       nbh = nbh - heuresgratuites;
+      if(nbh < 0) nbh = 0;
       var nbt1 = nbh > valeur["t1"] ? valeur["t1"] : nbh;
       var nbt2 = nbh - nbt1 > valeur["t2"] ? valeur["t2"] : nbh - nbt1;
       var nbt3 = nbh - nbt1 - nbt2 > valeur["t3"] ? valeur["t3"] : nbh - nbt1 - nbt2;
