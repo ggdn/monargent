@@ -6,7 +6,7 @@ import {FormattedMessage} from 'react-intl';
 import valeurs from '../../baremes/valeur.json';
 import str from '../../baremes/valeurs.json';
 
-const SSM = 2071.10;
+const SSM = 2703.74;
 const Plafondaidetat = 6;
 
 export default class Creche extends Component {
@@ -134,9 +134,9 @@ export default class Creche extends Component {
                 <div className="col-xs-12">
                   <div className="bs-callout bs-callout-info">
                     <p>Vous trouverez ici un simulateur pour estimer le coût de la crêche de votre enfant au luxembourg.
-                    <br/>Le simulateur se base sur les articles publiés sur le site du <a href="http://www.guichet.public.lu/citoyens/fr/famille/parents/garde-enfants/cheque-service-tarification/index.html">guichet.lu</a>
+                    <br/>Le simulateur se base sur les articles publiés sur le site du <a href="https://guichet.public.lu/fr/citoyens/famille-education/parents/garde-enfants/cheque-service.html">guichet.lu</a>
                     <br/>Les données sont données à titre indicatif
-                    <br/>Dernière mise à jour des indices : <b>Septembre 2020</b></p>
+                    <br/>Dernière mise à jour des indices : <b>Mai 2025</b></p>
                   </div>
                 </div>
               </div>
